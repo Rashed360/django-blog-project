@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title_block %}{{user.username|capfirst}}'s Profile{% endblock  %}
+{% block body_block %}
+<div class="container m-auto">
+    <div class="row">
+        <div class="col-md-4 bg-dark text-light rounded-start">
+            <div class="rounded mt-3 position-relative overflow-hidden" style="max-height:356px;">
+                <img class="img-fluid w-100"
+                {% if user.user_profile %}
+                    src="/media/{{user.user_profile.avatar}}" 
+                {% else %}
+                    src="{% static 'images/default.png' %}"
+                {% endif %}
+                alt="">
+                <a class="position-absolute m-2 bottom-0 end-0 btn btn-sm btn-outline-dark">View</a>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <h4 class="card-title d-inline">
+                    {% if user.first_name and user.last_name %}
+                        {{user.first_name}} {{user.last_name}}
+                    {% else %}
+                        Update Names
+                    {% endif %}
+                    </h4>
+                    <p class="card-text d-inline text-light">
+                    <i class="bi bi-person-circle"></i> /{{user.username}}</p>
+                </div>
+                <p class="card-text text-light lead mb-0">
+                <i class="bi bi-envelope-fill"></i>
+                {{user.email}}</p>
+                <p class="card-text text-light lead">
+                <i class="bi bi-calendar3"></i>
+                {{user.date_joined|date}}</p>
+                <div class="input-group input-group-sm">
+                    <span class="input-group-text bg-light" ><b>Edit:</b></span>
+                    <a {% if user.user_profile %}
+                        href="{% url 'app_login:modify' %}"
+                    {% else %}
+                        href="{% url 'app_login:extra' %}"
+                    {% endif %} class="btn btn-success">
+                        <i class="bi bi-pencil-square"></i> Profile</a>
+                    <a class="btn btn-primary" href="{% url 'app_login:update' %}">
+                        <i class="bi bi-file-person"></i> Account</a>
+                    <a class="btn btn-danger" href="{% url 'app_login:password' %}">
+                        <i class="bi bi-shield-check"></i> Password</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 bg-light p-5 border border-2 border-dark rounded-end">
+            <h5 class="display-5">{{user.username|capfirst}}'s Profile</h5>
+            <div class="card p-3 lead">{{user.user_profile.bio|default:"Add Bio"}}</div>
+            <div class=" container mt-2 d-flex justify-content-between flex-wrap">
+                <p class="lead d-inline"><kbd>
+                    <i class="bi bi-geo-alt-fill"></i></kbd> 
+                    {{user.user_profile.location|default:"Add Location"}}</p>
+                <p class="lead d-inline"><kbd>
+                    <i class="bi bi-check-circle-fill"></i></kbd> 
+                    {{user.last_login|date:'f A l, F j'}}</p>
+            </div>
+            <div class="card">
+                <div class="card-header">Latest Blogs:</div>
+                <div class="card-body">
+                    Content<br>Content<br>Content<br>Content<br>Content<br>Content<br>Content<br>Co
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock  %}

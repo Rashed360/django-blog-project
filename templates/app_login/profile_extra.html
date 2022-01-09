@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title_block %}{{action}} Profile{% endblock  %}
+{% block body_block %}
+<div class="container m-auto w-50">
+    <div class="card p-5">
+        <h2>{{action}} to Profile</h2>
+        <p class='lead'>Insert Profile Photo, Bio and Location</p>
+        <form method="post" enctype="multipart/form-data">
+            {{form|crispy}}
+            {% csrf_token %}
+            <input type="submit" class="btn btn-dark mt-3" value="{{action}} Data">
+            <a class="btn btn-info mt-3" href="{% url 'app_login:profile' %}">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock  %}
