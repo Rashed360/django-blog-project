@@ -14,7 +14,8 @@
             <div class="container">
                 <a class="navbar-brand" href="{% url 'index' %}"><img draggable="false" src="{% static 'images/logo.svg' %}" alt=""></a>
                 <form class="justify-content-start"> 
-                    {% if user.is_authenticated %}    
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'app_blog:create' %}" class="btn btn-outline-primary" type="button">Create Blog</a>
                     <a href="{% url 'app_login:profile' %}" class="btn btn-outline-dark" type="button">{{user.username}}</a>
                     <a href="{% url 'app_login:logout' %}" class="btn btn-dark" type="button">Log Out</a>
                     {% else %}

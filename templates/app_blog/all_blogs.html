@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title_block %}All Blogs{% endblock  %}
+{% load custom_filters %}
+{% load static %}
+{% block body_block %}
+<main class="blog-grid-page">
+    <div class="container">
+        <p class='lead'>Newly Posted Blogs For You</p>
+        <div class="row mt-2">
+            
+            {% for blog in blogs %}
+            <div class="col-md-4 mb-4">
+                <div class="card" style="height:355px">
+                    <div class="overflow-hidden" style="height:200px">
+                        <a href="{% url 'app_blog:blog' slug=blog.slug %}">
+                        <img class="img-fluid"
+                            {% if blog.blog_image == "" %}
+                                src="{% static '/images/empty.jpg' %}"
+                            {% else %}
+                                src="/media/{{blog.image}}"
+                            {% endif %} 
+                        alt=""></a>
+                    </div>
+                    <div class="px-3 py-1">
+                        <p class="d-flex justify-content-between mb-1 text-secondary">
+                            <span><i class="bi bi-calendar3"></i> {{blog.published|date}}</span>
+                            <span><i class="bi bi-person-circle"></i> {{blog.author}}</span>
+                        </p>
+                        <h5>{{blog.title|value_range:60}}</h5>
+                        <p class="mb-0">{{blog.content|value_range:85}}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+        <div class="row">
+            <div class="col-12 pb-5 mb-5">
+                    <nav class="d-flex align-items-center justify-content-center my-4">
+                        <a class="btn btn-light mx-1" href="#">&larr;</a>
+                        <a class="btn btn-light mx-1" href="#">01</a>
+                        <a class="btn btn-light mx-1" href="#">02</a>
+                        <a class="btn btn-light mx-1" href="#">03</a>
+                        <a class="btn btn-light mx-1" href="#">&rarr;</a>
+                    </nav>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock  %}

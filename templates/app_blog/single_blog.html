@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% block title_block %}{{blog.title}}{% endblock  %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block body_block %}
+<main class="blog-post-single">
+    <div class="container">
+        <div class="row mt-2">
+            <div class="col-md-8">
+                <div class="mb-1 overflow-hidden rounded border" style="max-height:300px">
+                    <img class="img-fluid align-middle w-100"
+                            {% if blog.blog_image == "" %}
+                                src="{% static '/images/empty.jpg' %}"
+                            {% else %}
+                                src="/media/{{blog.image}}"
+                            {% endif %} 
+                        alt="">
+                </div>
+                <p class="mx-2 text-secondary">
+                    <i class="bi bi-pencil-square"></i>
+                    Posted by <b>@/{{blog.author}}</b> at {{blog.published}}.
+                    Last edited at {{blog.edited}}.</p>
+                <div class="post-content">
+                    <h4 class="fw-bold">{{blog.title}}</h4>
+                    <p class="lead">{{blog.sub_title}}</p>
+                    <p style="text-align:justify">{{blog.content|linebreaks}}</p>
+                </div>
+                
+                {% if user.is_authenticated %}   
+                <form method="post" class="d-flex my-3">
+                    {{comment_form|crispy}}
+                    {% csrf_token %}
+                    <button class="btn btn-dark me-2" type="submit"><i class="bi bi-chat-dots"></i> Comment</button>
+                    {% if liked %}
+                    <a class="btn btn-warning" href="{% url 'app_blog:dislike' pk=blog.pk %}">
+                    <i class="bi bi-hand-thumbs-down"></i> Dislike</a>
+                    {% else %}
+                    <a class="btn btn-primary" href="{% url 'app_blog:like' pk=blog.pk %}">
+                    <i class="bi bi-hand-thumbs-up"></i> Like</a>
+                    {% endif %}
+                </form>                
+                {% else %}
+                    <p class="lead">
+                        <a class="text-decoration-none" href="{% url 'app_login:login' %}">
+                        <i class="bi bi-person-circle"></i> 
+                        Login</a> to post a comment.
+                    </p>
+                {% endif %}
+
+                <div class="card mb-5">
+                    <div class="card-header">
+                        <span>
+                            <i class="bi bi-hand-thumbs-up"></i>
+                            <b>{{blog.blog_like.count}}</b> Likes and
+                        </span>
+                        <span class="ms-2">
+                            <i class="bi bi-chat-right-quote ml-2"></i>
+                            <b>{{blog.blog_comment.count}}</b> Comments by other users:
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        {% for comment in blog.blog_comment.all %}
+                            <div class="card p-2 mb-1">
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="m-0">
+                                        {% if comment.user.first_name == "" %}
+                                            {{comment.user}}
+                                        {% else %}
+                                        {{comment.user.first_name}} {{comment.user.last_name}}
+                                        {% endif %}
+                                    </h5>
+                                    <p>{{comment.commented}}</p>
+                                </div>
+                                <p class="my-0">{{comment.comment}}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <h5>Tags</h5>
+                    <div class="py-3">
+                        <span class="border p-2 rounded">Design</span>
+                        <span class="border p-2 rounded">Development</span>
+                        <span class="border p-2 rounded">UI/UX</span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <h5>Share</h5>
+                    <div class="py-3">
+                        <a class="btn btn-light me-2"><i class="bi bi-facebook"></i></a>
+                        <a class="btn btn-light me-2"><i class="bi bi-twitter"></i></a>
+                        <a class="btn btn-light me-2"><i class="bi bi-discord"></i></a>
+                        <a class="btn btn-light me-2"><i class="bi bi-telegram"></i></a>
+                    </div>
+                </div>
+                <div class="">
+                    <h5 class="">Categories</h5>
+                    <div class="card" style="width: 18rem;">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">An item</li>
+                            <li class="list-group-item">A second item</li>
+                            <li class="list-group-item">A third item</li>
+                            <li class="list-group-item">An item</li>
+                            <li class="list-group-item">A second item</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock  %}
