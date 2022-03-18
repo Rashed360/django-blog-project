@@ -11,7 +11,7 @@ The Given Project needs virtual environment to work, so please follow below step
 first clone or fork this repo
 
 ### Creating the Vitual Environment with `venv`
-```python3
+```bash
 python -m venv venv
 ```
 
@@ -36,7 +36,18 @@ source venv/bin/activate
 ```
 
 ### Install the dependencies
-```python3
+```bash
 pip install -r requirements.txt
 ```
 
+### Migrate the project
+```python3
+python manage.py makemigrations
+
+python manage.py migrate
+```
+
+### Lastly Run Server Locally
+```python3
+python manage.py runserver
+```
