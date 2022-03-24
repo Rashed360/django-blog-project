@@ -1,10 +1,10 @@
 # django-blog-project
 
 ## Dependencies:
-`Django==4.0.1`
-`Pillow==9.0.0`
-`django-crispy-forms==1.13.0`
-`django-cleanup==5.2.0`
+- `Django==4.0.1`
+- `Pillow==9.0.0`
+- `django-crispy-forms==1.14.0`
+- `django-cleanup==5.2.0`
 
 ## Installation Process
 The Given Project needs virtual environment to work, so please follow below steps.
