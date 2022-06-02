@@ -60,9 +60,16 @@
                     {{user.last_login|date:'f A l, F j'}}</p>
             </div>
             <div class="card">
-                <div class="card-header">Latest Blogs:</div>
+                <div class="card-header d-flex justify-content-between">
+                    <h5>My Blogs:</h5>
+                    <a href="{% url 'app_blog:manage' %}" class="btn btn-warning btn-sm">Manage Blogs</a>
+                </div>
                 <div class="card-body">
-                    Content<br>Content<br>Content<br>Content<br>Content<br>Content<br>Content<br>Co
+                    <ul>
+                    {% for blog in user.blog_author.all %}
+                        <li><a class="text-decoration-none" href="{% url 'app_blog:blog' slug=blog.slug %}">{{blog.title}}</a></li>
+                    {% endfor %}
+                    </ul>
                 </div>
             </div>
         </div>

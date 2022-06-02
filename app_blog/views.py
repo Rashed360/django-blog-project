@@ -1,10 +1,10 @@
-from django.contrib.auth import models
 from django.shortcuts import render, HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from django.views.generic import CreateView, UpdateView, DeleteView, ListView, DetailView, TemplateView, View
-from app_blog.models import Blog, Comment, Like
+from django.views.generic import CreateView, UpdateView, ListView
+from django.views.generic.base import TemplateView
+from app_blog.models import Blog, Like
 from uuid import uuid4
 from app_blog.forms import CommentForm
 
@@ -20,6 +20,16 @@ class CreateBlog(LoginRequiredMixin, CreateView):
         blog_obj.slug = blog_obj.title.replace(" ","-")+'-'+str(uuid4())
         blog_obj.save()
         return HttpResponseRedirect(reverse('app_blog:blogs'))
+
+class UpdateBlog(LoginRequiredMixin, UpdateView):
+    model = Blog
+    template_name = 'app_blog/edit_blog.html'
+    fields = ('title','sub_title','content','image')
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('app_blog:blog', kwargs={'slug':self.object.slug})
+
+class MyBlog(LoginRequiredMixin, TemplateView):
+    template_name = 'app_blog/my_blogs.html'
 
 class BlogList(ListView):
     context_object_name = 'blogs'
@@ -63,3 +73,14 @@ def dislike_blog(request, pk):
     already_liked = Like.objects.filter(blog=blog, user=user)
     already_liked.delete()
     return HttpResponseRedirect(reverse('app_blog:blog', kwargs={'slug':blog.slug}))
+
+@login_required
+def delete_blog(request,pk):
+    blog = Blog.objects.get(pk=pk)
+    msg = 'Failed'
+    if blog.author:
+        if request.user == blog.author:
+            blog.delete()
+            msg = 'Success'
+    context={'msg':msg}
+    return render(request, 'app_blog/confirm.html', context)

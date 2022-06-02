@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title_block %}My Blog{% endblock  %}
+{% load static %}
+{% block body_block %}
+<div class="container">
+{% if user.is_authenticated %}
+    {% if msg %}
+    <div class="alert alert-warning">{{msg}}</div>
+    {% endif %}
+{% else %}
+    <h4>Sorry!</h4>
+    <p>You are not allowed to use this!</p>
+{% endif %}
+</div>
+{% endblock  %}

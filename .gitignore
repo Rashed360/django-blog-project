@@ -1,1 +1,4 @@
-.blog_venv/
+.blog_project_venv/
+media/
+__pycache__
+db.sqlite3

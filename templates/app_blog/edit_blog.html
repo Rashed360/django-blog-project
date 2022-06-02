@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title_block %}Edit Blog{% endblock  %}
+
+{% block body_block %}
+<div class="container m-auto w-50">
+    <div class="card p-5 mb-5">
+        {% if blog.author == user %}
+        <h2>Update Blog</h2>
+        <p class="text-secondary">Update informations and publish your blog.</p>
+        <form method="post" enctype="multipart/form-data">
+            {{form|crispy}}
+            {% csrf_token %}
+            <input type="submit" class="btn btn-dark mt-3" value="Update Blog">
+        </form>
+        {% else %}
+        <h2>Sorry!</h2>
+        <p class="text-secondary">You don't have permission to edit this blog!</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock  %}
