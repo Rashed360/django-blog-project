@@ -1,4 +1,5 @@
 .blog_project_venv/
+media/
 
 # Adding Default Python gitignore template
 # Byte-compiled / optimized / DLL files
