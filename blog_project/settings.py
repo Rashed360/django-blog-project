@@ -1,4 +1,5 @@
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -7,12 +8,13 @@ STATIC_DIR = BASE_DIR.joinpath('static')
 MEDIA_DIR = BASE_DIR.joinpath('media')
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure--&+ko*o$o*2g-g9w8p&cw-8ri)v_)($7ou$aq1_ge5l07)^8e_'
+SECRET_KEY = config('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.vercel.app', '.now.sh','127.0.0.1']
 
 # Application definition
 INSTALLED_APPS = [
@@ -62,11 +64,23 @@ TEMPLATES = [
 WSGI_APPLICATION = 'blog_project.wsgi.application'
 
 # Database
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+### SQLITE
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+### PostgreSQL
+DATABASES={
+   'default':{
+      'ENGINE':'django.db.backends.postgresql_psycopg2',
+      'NAME': config('DJANGO_DB_NAME'),
+      'USER': config('DJANGO_DB_USER'),
+      'PASSWORD': config('DJANGO_DB_PASS'),
+      'HOST': config('DJANGO_DB_HOST'),
+      'PORT': config('DJANGO_DB_PORT'),
+   }
 }
 
 # Password validation
@@ -97,8 +111,10 @@ USE_L10N = True
 USE_TZ = False
 
 # Static files (CSS, JavaScript)
+STATIC_ROOT = BASE_DIR.joinpath('staticfiles')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [STATIC_DIR,]
+
 
 # Media files (Images)
 MEDIA_ROOT = MEDIA_DIR
