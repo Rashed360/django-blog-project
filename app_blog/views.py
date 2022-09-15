@@ -7,6 +7,7 @@ from django.views.generic.base import TemplateView
 from app_blog.models import Blog, Like
 from uuid import uuid4
 from app_blog.forms import CommentForm
+from slugify import slugify
 
 
 class CreateBlog(LoginRequiredMixin, CreateView):
@@ -17,7 +18,7 @@ class CreateBlog(LoginRequiredMixin, CreateView):
         blog_obj = form.save(commit=False)
         blog_obj.author = self.request.user
         blog_obj.image = self.request.FILES['image']
-        blog_obj.slug = blog_obj.title.lower().replace("&","$","+",",","/",":",";","=","?","@","#"," ","<",">","[","]","{","}","|","\\","^","%")+'-'+str(uuid4())
+        blog_obj.slug = slugify(blog_obj.title)+'-'+str(uuid4())
         blog_obj.save()
         return HttpResponseRedirect(reverse('app_blog:blogs'))
 
